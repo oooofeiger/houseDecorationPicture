@@ -28,6 +28,31 @@ export default class Index extends Component {
     //     }
     //   }
     // })
+    Taro.getStorage({
+      key:'collectList',
+      success(res){
+        console.log(res)
+      },
+      fail(){
+        Taro.setStorage({
+          key: "collectList",
+          data: []
+        })
+      }
+    })
+
+    Taro.getStorage({
+      key:'delList',
+      success(res){
+        console.log(res)
+      },
+      fail(){
+        Taro.setStorage({
+          key: "delList",
+          data: []
+        })
+      }
+    })
   }
 
   componentWillUnmount () { }
@@ -38,7 +63,7 @@ export default class Index extends Component {
 
   handleClickMoreButton(title){
     Taro.navigateTo({
-      url:'/pages/detail/index?title='+title
+      url:'/pages/detail/detail?title='+title
     })
   }
 

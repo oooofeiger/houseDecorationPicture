@@ -33,6 +33,24 @@ export default function() {
     setName(res.detail.userInfo.nickName);
   }
 
+  function handleClickCollectList(target){
+    switch (target) {
+      case 'collect':
+        Taro.navigateTo({
+          url:'/pages/collectList/collectList'
+        })
+        break;
+      case 'del':
+        Taro.navigateTo({
+          url:'/pages/delList/delList'
+        })
+        break;
+      default:
+        break;
+    }
+    
+  }
+
     return (
       <View className='home'>
         <View className="top">
@@ -46,11 +64,11 @@ export default function() {
             hasInfoFlag ? "" : <Button open-type="getUserInfo" onGetuserinfo={handleGetUserInfo}></Button>
           }
           <View className="nav">
-            <View className="textCon">
+            <View className="textCon" onClick={()=>{handleClickCollectList('collect')}}>
               <Text className="text">我的收藏</Text>
               <Image src={rightArrow} mode="aspectFit"></Image>
             </View>
-            <View className="textCon">
+            <View className="textCon" onClick={()=>{handleClickCollectList('del')}}>
               <Text className="text">我的删除</Text>
               <Image src={rightArrow} mode="aspectFit"></Image>
             </View>
