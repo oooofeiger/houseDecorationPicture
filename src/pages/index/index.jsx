@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro';
 import { View, Text, Image, Button } from '@tarojs/components'
 import './index.less'
 import cc from '@src/assets/cc.png';
@@ -10,7 +11,23 @@ export default class Index extends Component {
   componentWillMount () { }
 
   componentDidMount () { 
-    
+    // Taro.getSetting({
+    //   success(res) {
+    //     if (!res.authSetting['scope.userInfo']) {
+    //       Taro.authorize({
+    //         scope: 'scope.userInfo',
+    //         success () {
+    //           // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+    //           Taro.getUserInfo({
+    //             success:function(res){
+    //               console.log(res,'userInfo')
+    //             }
+    //           })
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
   }
 
   componentWillUnmount () { }
@@ -18,6 +35,12 @@ export default class Index extends Component {
   componentDidShow () { }
 
   componentDidHide () { }
+
+  handleClickMoreButton(title){
+    Taro.navigateTo({
+      url:'/pages/detail/index?title='+title
+    })
+  }
 
   render () {
     return (
@@ -38,7 +61,7 @@ export default class Index extends Component {
               <Image src={cc} mode="aspectFit"></Image>
             </View>
           </View>
-          <Button className="button" plain type="primary">查看更多</Button>
+          <Button onClick={()=>{this.handleClickMoreButton('经典风格')}} className="button" plain type="primary">查看更多</Button>
         </View>
 
         <View className="container">
