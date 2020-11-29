@@ -1,0 +1,30 @@
+export default {
+    //二居室
+    twoBedroom:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/twoBedroom/",
+    //三居室
+    threeBedroom:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/threeBedroom/",
+    //四居室
+    fourBedroom:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/fourBedroom/",
+    //阳台
+    balcony:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/balcony/",
+    //卧室
+    bedroom:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/bedroom/",
+    //餐厅
+    canting:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/canting/",
+    //厨房
+    chufang:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/chufang/",
+    //客厅
+    keting:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/keting/",
+    //楼梯
+    louti:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/louti/",
+    //飘窗
+    piaochuang:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/piaochuang/",
+    //书房
+    shufang:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/shufang/",
+    //榻榻米
+    tatami:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/tatami/",
+    //卫生间
+    toilet:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/toilet/",
+    //玄关
+    xuanguan:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/xuanguan/",
+}

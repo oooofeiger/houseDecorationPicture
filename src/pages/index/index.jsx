@@ -3,7 +3,9 @@ import Taro from '@tarojs/taro';
 import { View, Text, Image, Button } from '@tarojs/components'
 import './index.less'
 import cc from '@src/assets/cc.png';
+import imgUrl from '@src/imgUrl.js';
 
+const DISPLAY_NUM = 4;
 export default class Index extends Component {
   handleClickImg(cc,e){
     console.log(e,cc)
@@ -36,9 +38,9 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
-  handleClickMoreButton(title){
+  handleClickMoreButton(title,code){
     Taro.navigateTo({
-      url:'/pages/detail/index?title='+title
+      url:'/pages/detail/index?title='+title+'&code='+code
     })
   }
 
@@ -46,43 +48,35 @@ export default class Index extends Component {
     return (
       <View className='index'>
         <View className="container">
-          <Text className='title'>经典风格</Text>
+          <Text className='title'>二居室</Text>
           <View className='imgCon'>
-            <View className="img">
-              <Image onClick={(e)=>this.handleClickImg(cc,e)} src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
+            {
+              new Array(DISPLAY_NUM).fill(0).map((v,i)=>{
+                return (
+                  <View className="img">
+                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.twoBedroom+i+'.jpg'} mode="aspectFit"></Image>
+                  </View>
+                )
+              })
+            }
+            <Button onClick={()=>{this.handleClickMoreButton('二居室','twoBedroom')}} className="button" plain type="primary">查看更多</Button>
           </View>
-          <Button onClick={()=>{this.handleClickMoreButton('经典风格')}} className="button" plain type="primary">查看更多</Button>
-        </View>
-
+        </View>    
         <View className="container">
-          <Text className='title'>西欧风格</Text>
+          <Text className='title'>三居室</Text>
           <View className='imgCon'>
-            <View className="img">
-              <Image onClick={(e)=>this.handleClickImg(cc,e)} src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
-            <View className="img">
-              <Image src={cc} mode="aspectFit"></Image>
-            </View>
+          {
+              new Array(DISPLAY_NUM).fill(0).map((v,i)=>{
+                return (
+                  <View className="img">
+                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.threeBedroom+i+'.jpg'} mode="aspectFit"></Image>
+                  </View>
+                )
+              })
+            }
+            <Button onClick={()=>{this.handleClickMoreButton('三居室','threeBedroom')}} className="button" plain type="primary">查看更多</Button>
           </View>
-          <Button className="button" plain type="primary">查看更多</Button>
         </View>
-        
         
       </View>
     )
