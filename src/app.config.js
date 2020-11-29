@@ -1,8 +1,10 @@
 export default {
   pages: [
     'pages/index/index',
-    'pages/home/index',
-    'pages/detail/index'
+    'pages/home/home',
+    'pages/detail/detail',
+    'pages/collectList/collectList',
+    'pages/delList/delList'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -16,7 +18,7 @@ export default {
     backgroundColor:'#fff',
     list:[
       {pagePath:'pages/index/index',text:'首页',iconPath:'./assets/index.png',selectedIconPath:'./assets/indexSelected.png'},
-      {pagePath:'pages/home/index',text:'我的',iconPath:'./assets/home.png',selectedIconPath:'./assets/homeSelected.png'}
+      {pagePath:'pages/home/home',text:'我的',iconPath:'./assets/home.png',selectedIconPath:'./assets/homeSelected.png'}
     ]
   }
 }

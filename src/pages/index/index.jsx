@@ -30,6 +30,31 @@ export default class Index extends Component {
     //     }
     //   }
     // })
+    Taro.getStorage({
+      key:'collectList',
+      success(res){
+        console.log(res)
+      },
+      fail(){
+        Taro.setStorage({
+          key: "collectList",
+          data: []
+        })
+      }
+    })
+
+    Taro.getStorage({
+      key:'delList',
+      success(res){
+        console.log(res)
+      },
+      fail(){
+        Taro.setStorage({
+          key: "delList",
+          data: []
+        })
+      }
+    })
   }
 
   componentWillUnmount () { }
