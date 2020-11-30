@@ -65,7 +65,7 @@ export default class Index extends Component {
 
   handleClickMoreButton(title,code){
     Taro.navigateTo({
-      url:'/pages/detail/index?title='+title+'&code='+code
+      url:'/pages/detail/detail?title='+title+'&code='+code
     })
   }
 
@@ -79,7 +79,7 @@ export default class Index extends Component {
               new Array(DISPLAY_NUM).fill(0).map((v,i)=>{
                 return (
                   <View className="img">
-                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.twoBedroom+i+'.jpg'} mode="aspectFit"></Image>
+                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.twoBedroom+i+'.jpg'} mode="aspectFill"></Image>
                   </View>
                 )
               })
@@ -94,7 +94,7 @@ export default class Index extends Component {
               new Array(DISPLAY_NUM).fill(0).map((v,i)=>{
                 return (
                   <View className="img">
-                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.threeBedroom+i+'.jpg'} mode="aspectFit"></Image>
+                    <Image onClick={(e)=>this.handleClickImg(cc,e)} src={imgUrl.threeBedroom+i+'.jpg'} mode="aspectFill"></Image>
                   </View>
                 )
               })
