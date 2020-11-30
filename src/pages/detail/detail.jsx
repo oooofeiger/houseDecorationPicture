@@ -11,7 +11,7 @@ export default class Index extends Component {
     super(props);
     this.state = {
       title:'',
-      dataList: new Array(PUSH_COUNT).fill(0),
+      dataList: new Array(PUSH_COUNT).fill(0).map((v,i)=>i),
       checkList: [],
       showCheckbox: false,
       count:PUSH_COUNT,//当前触图片数量
@@ -44,9 +44,11 @@ export default class Index extends Component {
   onReachBottom(){
     console.log('onReachBottom');
     this.setState((state)=>({
-      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0)),
+      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0).map((v,i)=>(state.count + i))),
       count: state.count + PUSH_COUNT
-    }))
+    }),()=>{
+      console.log(this.state.dataList)
+    })
   }
 
   handlePreview(url){
@@ -98,26 +100,56 @@ export default class Index extends Component {
   }
 
   handleAdd(){
-    let { checkList } = this.state;
+    let { checkList, code, title } = this.state;
     let that = this;
     Taro.getStorage({
       key:'collectList',
       success(res){
         console.log(res);
-        that.setState({
-          showCheckbox: false
-        });
         Taro.showToast({
           title: '已收藏',
           icon: 'success',
           duration: 2000
         })
+        let flag = true;//这个属性是否是第一次添加
+        res.data.forEach(element => {
+          if(element.code === code){
+            flag = false;
+            element.arr = [...new Set(element.arr.concat(checkList))];
+            element.title = title;
+          }
+        });
+        if(flag){
+          let obj = {};
+          obj.code = code;
+          obj.arr = checkList;
+          obj.title = title;
+          res.data.push(obj);
+        }
+        console.log(res.data,'collectList')
         Taro.setStorage({
           key: 'collectList',
-          data: [...new Set(res.data.concat(checkList))],
+          data: res.data,
           success(){
             that.setState({
-              checkList:[]
+              checkList:[],
+              showCheckbox: false
+            })
+          }
+        })
+      },
+      fail(){
+        let obj = {};
+        obj.code = code;
+        obj.arr = checkList;
+        obj.title = title;
+        Taro.setStorage({
+          key: 'collectList',
+          data: [obj],
+          success(){
+            that.setState({
+              checkList:[],
+              showCheckbox: false
             })
           }
         })
@@ -126,7 +158,7 @@ export default class Index extends Component {
   }
 
   handleDel(){
-    let { checkList, dataList } = this.state;
+    let { checkList, dataList, title, code } = this.state;
     let that = this;
     Taro.getStorage({
       key:'delList',
@@ -136,7 +168,6 @@ export default class Index extends Component {
           return checkList.indexOf(v)<0
         })
         that.setState({
-          showCheckbox: false,
           dataList: nowList
         })
         Taro.showToast({
@@ -144,16 +175,50 @@ export default class Index extends Component {
           icon: 'success',
           duration: 2000
         })
+        let flag = true;//这个属性是否是第一次添加
+        res.data.forEach(element => {
+          if(element.code === code){
+            flag = false;
+            element.arr = [...new Set(element.arr.concat(checkList))];
+            element.title = title;
+          }
+        });
+        if(flag){
+          let obj = {};
+          obj.code = code;
+          obj.arr = checkList;
+          obj.title = title;
+          res.data.push(obj);
+        }
+        console.log(res.data,'delList')
         Taro.setStorage({
           key: 'delList',
-          data: [...new Set(res.data.concat(checkList))],
+          data: res.data,
           success(){
             that.setState({
+              showCheckbox: false,
               checkList:[]
             })
           }
         })
+      },
+      fail(){
+        let obj = {};
+        obj.code = code;
+        obj.arr = checkList;
+        obj.title = title;
+        Taro.setStorage({
+          key: 'delList',
+          data: [obj],
+          success(){
+            that.setState({
+              checkList:[],
+              showCheckbox: false
+            })
+          }
+        })
       }
+
     })
   }
 
@@ -176,10 +241,10 @@ export default class Index extends Component {
               dataList.map((v,i)=>{
                 return (
                   <View key={i} className="img">
-                    <Image onClick={this.handlePreview.bind(this,imgUrl[code]+i+'.jpg')} src={imgUrl[code]+i+'.jpg'} mode="aspectFill"></Image>
+                    <Image onClick={this.handlePreview.bind(this,imgUrl[code]+v+'.jpg')} src={imgUrl[code]+v+'.jpg'} mode="aspectFill"></Image>
                     {
-                      showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,i)}>
-                        <Checkbox checked={checkList.indexOf(i)>-1} className="checkbox"></Checkbox>
+                      showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,v)}>
+                        <Checkbox checked={checkList.indexOf(v)>-1} className="checkbox"></Checkbox>
                       </View> : null
                     }
                     

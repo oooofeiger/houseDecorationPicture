@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '收藏列表'
+  navigationBarTitleText: '删除列表'
 }

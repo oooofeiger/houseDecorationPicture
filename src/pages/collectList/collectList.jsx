@@ -3,6 +3,7 @@ import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
 import cc from '@src/assets/cc.png';
+import imgUrl from '@src/imgUrl.js';
 
 const PUSH_COUNT = 30;
 export default class Index extends Component {
@@ -10,7 +11,7 @@ export default class Index extends Component {
     super(props);
     this.state = {
       dataList: [],
-      checkList: [],
+      checkList: JSON.parse(JSON.stringify( imgUrl.checkList )),
       showCheckbox: false
     }
     this.handlePreview = this.handlePreview.bind(this);
@@ -59,20 +60,19 @@ export default class Index extends Component {
     })
   }
 
-  handleCheckboxCon(i){
+  handleCheckboxCon(i,code){
     let { checkList } = this.state;
-    let index = checkList.indexOf(i);
+    let index = checkList[code].indexOf(i);
     if(index<0){
-      this.setState(()=>{
-        checkList.push(i);
-        return {checkList}
-      })
+      checkList[code].push(i)
     }else{
-      checkList.splice(index,1);
-      this.setState(()=>({
-        checkList: checkList
-      }))
+      checkList[code].splice(index,1)
     }
+    console.log(checkList,'selected')
+    this.setState({
+      checkList
+    })
+    
   }
 
   handleLongClick(){
@@ -94,19 +94,21 @@ export default class Index extends Component {
           icon: 'success',
           duration: 2000
         })
-        let nowList = dataList.filter((v,i)=>{
-          return checkList.indexOf(v)<0
-        })
+        dataList.forEach(element => {
+          element.arr = element.arr.filter((v,i)=>{
+            return checkList[element.code].indexOf(v)<0
+          })
+        });
         that.setState({
           showCheckbox: false,
-          dataList: nowList
+          dataList
         })
         Taro.setStorage({
           key: 'collectList',
-          data: nowList,
+          data: dataList,
           success(){
             that.setState({
-              checkList:[]
+              checkList:JSON.parse(JSON.stringify( imgUrl.checkList ))
             })
           }
         })
@@ -115,9 +117,10 @@ export default class Index extends Component {
   }
 
   handleCancel(){
+    console.log(imgUrl.checkList,'imgUrl.checkList')
     this.setState({
       showCheckbox: false,
-      checkList:[]
+      checkList:JSON.parse(JSON.stringify( imgUrl.checkList ))
     })
   }
 
@@ -125,28 +128,34 @@ export default class Index extends Component {
     let { dataList, checkList, showCheckbox } = this.state;
     return (
       <View className='index'>
-        <View className="container">
-          <Text className='title'>我的收藏</Text>
-          <CheckboxGroup>
-          <View className='imgCon' onLongpress={this.handleLongClick}>
-            {
-              dataList.map((v,i)=>{
-                return (
-                  <View key={v} className="img">
-                    <Image onClick={this.handlePreview} src={cc} mode="aspectFill"></Image>
-                    {
-                      showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,v)}>
-                        <Checkbox checked={checkList.indexOf(v)>-1} className="checkbox"></Checkbox>
-                      </View> : null
-                    }
-                    
-                  </View>
-                )
-              })
-            }
-          </View>
-          </CheckboxGroup>
-        </View>
+        {
+          dataList.map((value,i)=>{
+            return (
+              <View className="container">
+                <Text className='title'>{value.title}</Text>
+                <CheckboxGroup>
+                <View className='imgCon' onLongpress={this.handleLongClick}>
+                  {
+                    value.arr.map((v,i)=>{
+                      return (
+                        <View key={v} className="img">
+                          <Image onClick={this.handlePreview} src={imgUrl[value.code]+v+'.jpg'} mode="aspectFill"></Image>
+                          {
+                            showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,v,value.code)}>
+                              <Checkbox checked={checkList[value.code].indexOf(v)>-1} className="checkbox"></Checkbox>
+                            </View> : null
+                          }
+                          
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+                </CheckboxGroup>
+              </View>
+            )
+          })
+        }
         
         {
           showCheckbox?<View className="optionList">
