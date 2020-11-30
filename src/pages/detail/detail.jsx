@@ -3,6 +3,7 @@ import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
 import cc from '@src/assets/cc.png';
+import imgUrl from '@src/imgUrl.js';
 
 const PUSH_COUNT = 30;
 export default class Index extends Component {
@@ -12,7 +13,8 @@ export default class Index extends Component {
       title:'',
       dataList: new Array(PUSH_COUNT).fill(0),
       checkList: [],
-      showCheckbox: false
+      showCheckbox: false,
+      count:PUSH_COUNT,//当前触图片数量
     }
     this.handlePreview = this.handlePreview.bind(this);
     this.handleCheckboxCon = this.handleCheckboxCon.bind(this);
@@ -34,19 +36,43 @@ export default class Index extends Component {
   onLoad(options){
     console.log(options,'onShow')
     this.setState({
-      title: options.title
+      title: options.title,
+      code: options.code
     })
   }
 
   onReachBottom(){
     console.log('onReachBottom');
     this.setState((state)=>({
-      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0))
+      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0)),
+      count: state.count + PUSH_COUNT
     }))
   }
 
-  handlePreview(){
+  handlePreview(url){
+    const { count, code } = this.state;
+    let previewUrls = [];
+    new Array(count).fill(0).map((v,i)=>{
+      previewUrls.push(imgUrl[code]+i+'.jpg')
+    })
+    // wx.getImageInfo({
+    //   src: url,
+    //   success (res) {
+        
+    //   }
+    // })
 
+    Taro.previewImage({
+      current: url, // 当前显示图片的http链接
+      urls: previewUrls, // 需要预览的图片http链接列表
+      success(){
+        console.log('预览成功')
+      },
+      fail(e){
+        console.log(e)
+      }
+    })
+    
   }
 
   handleCheckboxCon(i){
@@ -139,7 +165,7 @@ export default class Index extends Component {
   }
 
   render () {
-    let { title, dataList, checkList, showCheckbox } = this.state;
+    let { title, dataList, checkList, showCheckbox, code } = this.state;
     return (
       <View className='index'>
         <View className="container">
@@ -150,7 +176,7 @@ export default class Index extends Component {
               dataList.map((v,i)=>{
                 return (
                   <View key={i} className="img">
-                    <Image onClick={this.handlePreview} src={cc} mode="aspectFill"></Image>
+                    <Image onClick={this.handlePreview.bind(this,imgUrl[code]+i+'.jpg')} src={imgUrl[code]+i+'.jpg'} mode="aspectFill"></Image>
                     {
                       showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,i)}>
                         <Checkbox checked={checkList.indexOf(i)>-1} className="checkbox"></Checkbox>
