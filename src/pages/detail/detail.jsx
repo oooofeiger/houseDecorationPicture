@@ -19,6 +19,7 @@ export default class Index extends Component {
     this.handleLongClick = this.handleLongClick.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDel = this.handleDel.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
   componentWillMount () { }
 
@@ -45,10 +46,7 @@ export default class Index extends Component {
   }
 
   handlePreview(){
-    Taro.previewImage({
-      current: cc, // 当前显示图片的http链接
-      urls: [cc] // 需要预览的图片http链接列表
-    })
+
   }
 
   handleCheckboxCon(i){
@@ -90,21 +88,30 @@ export default class Index extends Component {
         })
         Taro.setStorage({
           key: 'collectList',
-          data: [...new Set(res.data.concat(checkList))]
+          data: [...new Set(res.data.concat(checkList))],
+          success(){
+            that.setState({
+              checkList:[]
+            })
+          }
         })
       }
     })
   }
 
   handleDel(){
-    let { checkList } = this.state;
+    let { checkList, dataList } = this.state;
     let that = this;
     Taro.getStorage({
       key:'delList',
       success(res){
         console.log(res);
+        let nowList = dataList.filter((v,i)=>{
+          return checkList.indexOf(v)<0
+        })
         that.setState({
-          showCheckbox: false
+          showCheckbox: false,
+          dataList: nowList
         })
         Taro.showToast({
           title: '已删除',
@@ -113,9 +120,21 @@ export default class Index extends Component {
         })
         Taro.setStorage({
           key: 'delList',
-          data: [...new Set(res.data.concat(checkList))]
+          data: [...new Set(res.data.concat(checkList))],
+          success(){
+            that.setState({
+              checkList:[]
+            })
+          }
         })
       }
+    })
+  }
+
+  handleCancel(){
+    this.setState({
+      showCheckbox: false,
+      checkList:[]
     })
   }
 
@@ -150,6 +169,7 @@ export default class Index extends Component {
           showCheckbox?<View className="optionList">
           <Text className="add" onClick={this.handleAdd}>收藏</Text>
           <Text className="del" onClick={this.handleDel}>删除</Text>
+          <Text className="cancel" onClick={this.handleCancel}>取消</Text>
         </View>:null}
       </View>
     )

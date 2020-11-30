@@ -17,6 +17,7 @@ export default class Index extends Component {
     this.handleCheckboxCon = this.handleCheckboxCon.bind(this);
     this.handleLongClick = this.handleLongClick.bind(this);
     this.handleDel = this.handleDel.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
   componentWillMount () { }
 
@@ -102,9 +103,21 @@ export default class Index extends Component {
         })
         Taro.setStorage({
           key: 'delList',
-          data: nowList
+          data: nowList,
+          success(){
+            that.setState({
+              checkList:[]
+            })
+          }
         })
       }
+    })
+  }
+
+  handleCancel(){
+    this.setState({
+      showCheckbox: false,
+      checkList:[]
     })
   }
 
@@ -138,6 +151,7 @@ export default class Index extends Component {
         {
           showCheckbox?<View className="optionList">
           <Text className="del" onClick={this.handleDel}>删除</Text>
+          <Text className="cancel" onClick={this.handleCancel}>取消</Text>
         </View>:null}
       </View>
     )
