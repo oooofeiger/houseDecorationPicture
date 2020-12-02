@@ -27,6 +27,8 @@ export default {
     toilet:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/toilet/",
     //玄关
     xuanguan:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/xuanguan/",
+    //儿童房
+    ertongfang:"https://decorate-picture-1257786023.cos.ap-chongqing.myqcloud.com/ertongfang/",
     dataList:[
         {
             title:'二居室',
@@ -39,13 +41,8 @@ export default {
             arr: []
         },
         {
-            title:'四居室',
-            code: 'fourBedroom',
-            arr: []
-        },
-        {
-            title:'阳台',
-            code: 'balcony',
+            title:'餐厅',
+            code: 'canting',
             arr: []
         },
         {
@@ -54,28 +51,8 @@ export default {
             arr: []
         },
         {
-            title:'餐厅',
-            code: 'canting',
-            arr: []
-        },
-        {
-            title:'楼梯',
-            code: 'louti',
-            arr: []
-        },
-        {
-            title:'飘窗',
-            code: 'piaochuang',
-            arr: []
-        },
-        {
             title:'书房',
             code: 'shufang',
-            arr: []
-        },
-        {
-            title:'榻榻米',
-            code: 'tatami',
             arr: []
         },
         {
@@ -86,6 +63,36 @@ export default {
         {
             title:'玄关',
             code: 'xuanguan',
+            arr: []
+        },
+        {
+            title:'飘窗',
+            code: 'piaochuang',
+            arr: []
+        },
+        {
+            title:'阳台',
+            code: 'balcony',
+            arr: []
+        },
+        {
+            title:'楼梯',
+            code: 'louti',
+            arr: []
+        },
+        {
+            title:'儿童房',
+            code: 'ertongfang',
+            arr: []
+        },
+        {
+            title:'四居室',
+            code: 'fourBedroom',
+            arr: []
+        },
+        {
+            title:'榻榻米',
+            code: 'tatami',
             arr: []
         }
     ],

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
-import cc from '@src/assets/cc.png';
 import imgUrl from '@src/imgUrl.js';
 
 const PUSH_COUNT = 30;
@@ -53,10 +52,20 @@ export default class Index extends Component {
   //   }))
   // }
 
-  handlePreview(){
+  handlePreview(url,imgUrl){
+    let previewUrls = [];
+    new Array(PUSH_COUNT).fill(0).map((v,i)=>{
+      previewUrls.push(imgUrl+i+'.jpg')
+    })
     Taro.previewImage({
-      current: cc, // 当前显示图片的http链接
-      urls: [cc] // 需要预览的图片http链接列表
+      current: url, 
+      urls: previewUrls, 
+      success(){
+        console.log('预览成功')
+      },
+      fail(e){
+        console.log(e)
+      }
     })
   }
 
@@ -137,7 +146,7 @@ export default class Index extends Component {
                     value.arr.map((v,i)=>{
                       return (
                         <View key={v} className="img">
-                          <Image onClick={this.handlePreview} src={imgUrl[value.code]+v+'.jpg'} mode="aspectFill"></Image>
+                          <Image onClick={this.handlePreview.bind(this,imgUrl[value.code]+v+'.jpg',imgUrl[value.code])} src={imgUrl[value.code]+v+'.jpg'} mode="aspectFill"></Image>
                           {
                             showCheckbox ? <View className="checkboxCon" onClick={this.handleCheckboxCon.bind(this,v,value.code)}>
                               <Checkbox checked={checkList[value.code].indexOf(v)>-1} className="checkbox"></Checkbox>

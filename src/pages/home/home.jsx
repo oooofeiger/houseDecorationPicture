@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Taro from '@tarojs/taro';
+import React, { useState } from 'react';
+import Taro,{ useShareAppMessage } from '@tarojs/taro';
 import { View, Text, Image, Icon, Button } from '@tarojs/components';
 import './index.less';
 import rightArrow from '@src/assets/rightArrow.png';
+import share from '@src/assets/share.jpg'
 
 export default function() {
   const [avatarUrl, setAvatarUrl] = useState(null);
@@ -51,6 +52,18 @@ export default function() {
     
   }
 
+  useShareAppMessage(res => {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '海量装修图，快进来看看吧',
+      path: 'pages/index/index',
+      imageUrl:share
+    }
+  })
+
     return (
       <View className='home'>
         <View className="top">
@@ -70,6 +83,10 @@ export default function() {
             </View>
             <View className="textCon" onClick={()=>{handleClickCollectList('del')}}>
               <Text className="text">我的删除</Text>
+              <Image src={rightArrow} mode="aspectFit"></Image>
+            </View>
+            <View className="textCon">
+              <Button className="textButton" openType="share" hoverClass="none">转发给好友</Button>
               <Image src={rightArrow} mode="aspectFit"></Image>
             </View>
             <View className="textCon">

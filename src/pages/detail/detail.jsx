@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
-import cc from '@src/assets/cc.png';
 import imgUrl from '@src/imgUrl.js';
 
 const PUSH_COUNT = 30;
