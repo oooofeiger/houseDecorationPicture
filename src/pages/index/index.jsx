@@ -3,12 +3,17 @@ import Taro from '@tarojs/taro';
 import { View, Text, Image, Button } from '@tarojs/components'
 import './index.less'
 import imgUrl from '@src/imgUrl.js';
+import share from '@src/assets/share.jpg';
 
 const DISPLAY_NUM = 4;
 export default class Index extends Component {
   componentWillMount () { }
 
   componentDidMount () { 
+    Taro.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
     Taro.getStorage({
       key:'collectList',
       success(res){
@@ -66,6 +71,20 @@ export default class Index extends Component {
       }
     })
   }
+
+  onShareAppMessage(res){
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '海量装修图，快进来看看吧',
+      path: 'pages/index/index',
+      imageUrl:share
+    }
+  }
+
+
 
   render () {
     return (

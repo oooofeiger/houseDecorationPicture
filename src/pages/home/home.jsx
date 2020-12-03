@@ -4,11 +4,19 @@ import { View, Text, Image, Icon, Button } from '@tarojs/components';
 import './index.less';
 import rightArrow from '@src/assets/rightArrow.png';
 import share from '@src/assets/share.jpg'
+import { useEffect } from 'react';
 
 export default function() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [name, setName] = useState(null);
   const [hasInfoFlag, setInfoFlag] = useState(avatarUrl?true:false);
+
+  useEffect(()=>{
+    Taro.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+  })
 
   Taro.getStorage({
     key: 'userInfo',

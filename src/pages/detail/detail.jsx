@@ -3,6 +3,7 @@ import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
 import imgUrl from '@src/imgUrl.js';
+import share from '@src/assets/share.jpg';
 
 const PUSH_COUNT = 30;
 export default class Index extends Component {
@@ -24,7 +25,12 @@ export default class Index extends Component {
   }
   componentWillMount () { }
 
-  componentDidMount () { }
+  componentDidMount () { 
+    Taro.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+  }
 
   componentWillUnmount () { }
 
@@ -48,6 +54,18 @@ export default class Index extends Component {
     }),()=>{
       console.log(this.state.dataList)
     })
+  }
+
+  onShareAppMessage(res){
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '海量装修图，快进来看看吧',
+      path: 'pages/index/index',
+      imageUrl:share
+    }
   }
 
   handlePreview(url){
