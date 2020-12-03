@@ -56,13 +56,7 @@ export default class Index extends Component {
     new Array(count).fill(0).map((v,i)=>{
       previewUrls.push(imgUrl[code]+i+'.jpg')
     })
-    // wx.getImageInfo({
-    //   src: url,
-    //   success (res) {
-        
-    //   }
-    // })
-
+    previewUrls = previewUrls.slice(previewUrls.indexOf(url),previewUrls.length);
     Taro.previewImage({
       current: url, // 当前显示图片的http链接
       urls: previewUrls, // 需要预览的图片http链接列表

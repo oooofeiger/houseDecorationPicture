@@ -56,7 +56,8 @@ export default class Index extends Component {
     let previewUrls = [];
     new Array(PUSH_COUNT).fill(0).map((v,i)=>{
       previewUrls.push(imgUrl+i+'.jpg')
-    })
+    });
+    previewUrls = previewUrls.slice(previewUrls.indexOf(url),previewUrls.length);
     Taro.previewImage({
       current: url, 
       urls: previewUrls, 
