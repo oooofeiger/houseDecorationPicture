@@ -33,67 +33,92 @@ export default {
         {
             title:'二居室',
             code: 'twoBedroom',
-            arr: []
+            arr: [],
+            count: 6500
         },
         {
             title:'三居室',
             code: 'threeBedroom',
-            arr: []
+            arr: [],
+            count: 4700
+        },
+        {
+            title:'客厅',
+            code: 'keting',
+            arr: [],
+            count: 250
         },
         {
             title:'餐厅',
             code: 'canting',
-            arr: []
+            arr: [],
+            count: 150
+        },
+        {
+            title:'厨房',
+            code: 'chufang',
+            arr: [],
+            count: 250
         },
         {
             title:'卧室',
             code: 'bedroom',
-            arr: []
+            arr: [],
+            count: 100
         },
         {
             title:'书房',
             code: 'shufang',
-            arr: []
+            arr: [],
+            count: 25
         },
         {
             title:'卫生间',
             code: 'toilet',
-            arr: []
+            arr: [],
+            count: 150
         },
         {
             title:'玄关',
             code: 'xuanguan',
-            arr: []
+            arr: [],
+            count: 50
         },
         {
             title:'飘窗',
             code: 'piaochuang',
-            arr: []
+            arr: [],
+            count: 50
         },
         {
             title:'阳台',
             code: 'balcony',
-            arr: []
+            arr: [],
+            count: 300
         },
         {
             title:'楼梯',
             code: 'louti',
-            arr: []
+            arr: [],
+            count: 250
         },
         {
             title:'儿童房',
             code: 'ertongfang',
-            arr: []
+            arr: [],
+            count: 100
         },
         {
             title:'四居室',
             code: 'fourBedroom',
-            arr: []
+            arr: [],
+            count: 2600
         },
         {
             title:'榻榻米',
             code: 'tatami',
-            arr: []
+            arr: [],
+            count: 100
         }
     ],
     checkList:{

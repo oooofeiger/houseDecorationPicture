@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, CheckboxGroup, Checkbox } from '@tarojs/components'
+import { View, Text, Image, CheckboxGroup, Checkbox, Slider } from '@tarojs/components'
 import Taro from '@tarojs/taro';
 import './index.less'
 import imgUrl from '@src/imgUrl.js';
@@ -15,6 +15,9 @@ export default class Index extends Component {
       checkList: [],
       showCheckbox: false,
       count:PUSH_COUNT,//当前触图片数量
+      initNum: 0, //初始索引，可以设置从指定索引处开始渲染图片
+      maxCount: 100, //slider的最大值
+      sliderValue: 0, //slider滑块的值
     }
     this.handlePreview = this.handlePreview.bind(this);
     this.handleCheckboxCon = this.handleCheckboxCon.bind(this);
@@ -22,14 +25,18 @@ export default class Index extends Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDel = this.handleDel.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.sliderChange = this.sliderChange.bind(this)
   }
   componentWillMount () { }
 
   componentDidMount () { 
+    const that = this;
+    const { code } = this.state;
     Taro.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })
+    
   }
 
   componentWillUnmount () { }
@@ -39,20 +46,64 @@ export default class Index extends Component {
   componentDidHide () { }
 
   onLoad(options){
-    console.log(options,'onShow')
+    console.log(options,'onShow');
+    const that = this;
+    imgUrl.dataList.forEach((v)=>{
+      if(v.code === options.code){
+        this.setState({
+          maxCount: v.count
+        })
+      }
+    });
     this.setState({
       title: options.title,
       code: options.code
+    });
+    Taro.getStorage({
+      key:'initNum',
+      success(res){
+        that.setState((state)=>({
+          initNum: res.data[options.code],
+          sliderValue: res.data[options.code],
+          dataList: state.dataList.map((v,i)=>{
+            return i + res.data[options.code]
+          })
+        }))
+      },
+      fail(){
+        console.log('componentDidMount还没获取到initNum')
+      }
     })
   }
 
   onReachBottom(){
     console.log('onReachBottom');
+    const { code, sliderValue} = this.state;
+    const that = this;
     this.setState((state)=>({
-      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0).map((v,i)=>(state.count + i))),
+      dataList: state.dataList.concat(new Array(PUSH_COUNT).fill(0).map((v,i)=>(state.count + i + state.initNum))),
       count: state.count + PUSH_COUNT
     }),()=>{
       console.log(this.state.dataList)
+    })
+
+    Taro.getStorage({
+      key:'initNum',
+      success(res){
+        that.setState({
+          sliderValue: sliderValue + PUSH_COUNT
+        })
+        Taro.setStorage({
+          key: 'initNum',
+          data: {[code]:sliderValue + PUSH_COUNT},
+          success(res){
+            console.log('缓存保存成功',res)
+          }
+        })
+      },
+      fail(){
+        console.log('componentDidMount还没获取到initNum')
+      }
     })
   }
 
@@ -69,10 +120,10 @@ export default class Index extends Component {
   }
 
   handlePreview(url){
-    const { count, code } = this.state;
+    const { count, code, initNum } = this.state;
     let previewUrls = [];
     new Array(count).fill(0).map((v,i)=>{
-      previewUrls.push(imgUrl[code]+i+'.jpg')
+      previewUrls.push(imgUrl[code]+(i+initNum)+'.jpg')
     })
     previewUrls = previewUrls.slice(previewUrls.indexOf(url),previewUrls.length);
     Taro.previewImage({
@@ -240,12 +291,39 @@ export default class Index extends Component {
     })
   }
 
+  sliderChange(e){
+    const { code } = this.state;
+    console.log(e.detail.value);
+    this.setState((state)=>({
+      initNum: e.detail.value,
+      dataList: state.dataList.map((v,i)=>{
+        return i + e.detail.value
+      }),
+      count: 0,
+      sliderValue: e.detail.value
+    }))
+    Taro.setStorage({
+      key: 'initNum',
+      data: {[code]:e.detail.value},
+      success(res){
+        console.log('缓存保存成功',res)
+      }
+    })
+  }
+
   render () {
-    let { title, dataList, checkList, showCheckbox, code } = this.state;
+    let { title, dataList, checkList, showCheckbox, code, maxCount, sliderValue } = this.state;
     return (
       <View className='index'>
         <View className="container">
           <Text className='title'>{title}</Text>
+          <View class="sliderCon">
+              <Text className='text'>从第</Text>
+              {
+                maxCount?<Slider className="slider" onChange={this.sliderChange} value={sliderValue} min={0} max={maxCount} showValue />:null
+              }
+              <Text className='text'>张开始看</Text>
+          </View>
           <CheckboxGroup>
           <View className='imgCon' onLongpress={this.handleLongClick}>
             {
