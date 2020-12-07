@@ -4,7 +4,8 @@ export default {
     'pages/home/home',
     'pages/detail/detail',
     'pages/collectList/collectList',
-    'pages/delList/delList'
+    'pages/delList/delList',
+    'pages/aboutUs/aboutUs'
   ],
   window: {
     backgroundTextStyle: 'light',

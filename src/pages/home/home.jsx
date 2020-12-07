@@ -54,6 +54,11 @@ export default function() {
           url:'/pages/delList/delList'
         })
         break;
+      case 'aboutUs':
+        Taro.navigateTo({
+          url:'/pages/aboutUs/aboutUs'
+        })
+        break;
       default:
         break;
     }
@@ -97,7 +102,7 @@ export default function() {
               <Button className="textButton" openType="share" hoverClass="none">转发给好友</Button>
               <Image src={rightArrow} mode="aspectFit"></Image>
             </View>
-            <View className="textCon">
+            <View className="textCon" onClick={()=>{handleClickCollectList('aboutUs')}}>
               <Text className="text">关于我们</Text>
               <Image src={rightArrow} mode="aspectFit"></Image>
             </View>
